@@ -37,134 +37,34 @@
         newMessage = "";
     }
 </script>
-<div class="container">
-    <div class="messages" id="message-container">
-        {#each messages as message (message.id)}
-            <div class="message">
-                <small>@{message.expand?.user?.username}</small>
-                <br>
-                <span class="message-text">{message.text}</span>
-            </div>
-        {/each}
+
+<div class="max-w-2xl mx-auto bg-lightgray rounded-lg p-4">
+  <div class="messages max-h-96 overflow-y-auto bg-lightgray">
+    {#each messages as message (message.id)}
+    <div class="message bg-gray-600 p-4 mb-8 relative text-left rounded-lg">
+      <small class="absolute top-1 right-1 text-sm text-gray-500 bg-opacity-70 rounded-sm p-1">
+        @{message.expand?.user?.username}
+      </small>
+      <span class="block break-words text-white">{message.text}</span>
     </div>
-    
-    <div>
-        <form class="chat" on:submit|preventDefault={sendMessage}>
-            <input placeholder="Message" required type="text" bind:value={newMessage} />
-            <button type="submit">Send</button>
-        </form>
-    </div>
+    {/each}
+  </div>
+
+  <div>
+    <form class="chat flex items-center p-4" on:submit|preventDefault={sendMessage}>
+      <input
+        class="flex-1 px-4 py-2 bg-gray-200 rounded-lg text-black focus:outline-none"
+        placeholder="Message"
+        required
+        type="text"
+        bind:value={newMessage}
+      />
+      <button
+        class="ml-4 px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 text-white"
+        type="submit"
+      >
+        Send
+      </button>
+    </form>
+  </div>
 </div>
-
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: Arial, sans-serif;
-}
-
-/* Die gesamte Container-Div */
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: lightgrey;
-  border-radius: 6px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Die Nachrichten-Spalte */
-.messages {
-  max-height: 500px;
-  border-radius: 6px;
-  flex: 1;
-  padding: 5px;
-  overflow-y: auto;
-  background-color: lightgrey;
-}
-
-/* Eine einzelne Nachricht */
-.message {
-  background-color: grey;
-  padding: 4px 4px 4px 4px;
-  border-radius: 5px;
-  margin-bottom: 8px;
-  position: relative;
-  text-align: left;
-}
-
-.message .message-text {
-  display: block; /* Text als Blockelement, um Zeilenumbruch zu erzwingen */
-  text-align: left; /* Text rechtsbündig */
-  word-wrap: break-word;
-}
-
-.message small {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  font-size: 12px;
-  color: #555;
-  background-color: rgba(255, 255, 255, 0.7); /* Transparenter Hintergrund */
-  padding: 2px 4px; /* Kleiner Padding für etwas Abstand zum Text */
-  border-radius: 3px;
-}
-
-.message span {
-  display: block; /* Text als Blockelement, um Zeilenumbruch zu erzwingen */
-}
-
-.message:last-child {
-  margin-bottom: 0;
-}
-
-/* Der Chat-Bereich */
-.chat {
-  padding: 10px;
-  display: flex;
-  align-items: center;
-}
-
-/* Das Eingabefeld im Chat */
-.chat input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  outline: none;
-  background-color: #f7f7f7;
-  color: black
-}
-
-/* Der Button im Chat */
-.chat button {
-  margin-left: 10px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  cursor: pointer;
-}
-
-/* Stil für die Scrollbar des Nachrichten-Containers */
-#message-container::-webkit-scrollbar {
-  width: 6px;
-}
-
-#message-container::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 5px;
-}
-
-#message-container::-webkit-scrollbar-thumb:hover {
-  background-color: #b3b3b3;
-}
-    </style>
-  
