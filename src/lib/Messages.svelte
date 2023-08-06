@@ -36,22 +36,48 @@
         const createdMessage = await pb.collection("messages").create(data);
         newMessage = "";
     }
+
+    function toDateTime(date: string) {
+      let dateObject = new Date(date);
+      return `${dateObject.getHours()}:${dateObject.getMinutes()} - ${dateObject.getDate()}.${dateObject.getMonth()+1}.${dateObject.getFullYear()}`;
+    }
 </script>
 
-<div class="max-w-2xl mx-auto bg-lightgray rounded-lg p-4">
-  <div class="messages max-h-96 overflow-y-auto bg-lightgray">
+<style>
+  /* Stil für die Scrollbar des Nachrichten-Containers */
+  .messages::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .messages::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+  }
+
+  .messages::-webkit-scrollbar-thumb:hover {
+    background-color: #b3b3b3;
+  }
+</style>
+
+{#if $currentUser}
+<div class="container max-w-2xl mx-auto rounded-lg p-4 flex flex-col">
+  <div class="messages max-h-96 overflow-y-auto mb-4 rounded-lg">
     {#each messages as message (message.id)}
-    <div class="message bg-gray-600 p-4 mb-8 relative text-left rounded-lg">
-      <small class="absolute top-1 right-1 text-sm text-gray-500 bg-opacity-70 rounded-sm p-1">
+    <div class="message p-4 mb-8 relative text-left rounded-lg bg-gray-600">
+      <small class="absolute top-1 left-1 text-sm text-gray-400 bg-opacity-70 rounded-sm p-1">
+        {toDateTime(message.created)}
+      </small>
+      <small class="absolute top-1 right-1 text-sm text-gray-400 bg-opacity-70 rounded-sm p-1">
         @{message.expand?.user?.username}
       </small>
+      <br/>
       <span class="block break-words text-white">{message.text}</span>
     </div>
     {/each}
   </div>
-
-  <div>
-    <form class="chat flex items-center p-4" on:submit|preventDefault={sendMessage}>
+  <div class="flex-1"></div>
+  <div class="chat flex items-center p-4 max-w-2xl mx-auto">
+    <form on:submit|preventDefault={sendMessage}>
       <input
         class="flex-1 px-4 py-2 bg-gray-200 rounded-lg text-black focus:outline-none"
         placeholder="Message"
@@ -68,3 +94,4 @@
     </form>
   </div>
 </div>
+{/if}
